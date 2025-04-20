@@ -18,25 +18,34 @@ class RecipeController extends Controller
     {
         $this->cloudinary = $cloudinary;
     }
+
     public function index(Request $request)
     {
-        $query = Recipe::query()->with('author');
+        $query = Recipe::with('author');
 
-        // Apply filters
-        if ($request->has('cuisine') && $request->cuisine !== 'all_cuisines') {
-            $query->where('cuisine', $request->cuisine);
+        // Filter by cuisine if provided
+        if ($request->has('cuisine')) {
+            $query->where('cuisine_type', $request->cuisine);
         }
 
+        // Apply difficulty filter
         if ($request->has('difficulty') && $request->difficulty !== 'any_difficulty') {
             $query->where('difficulty', $request->difficulty);
         }
 
-        if ($request->has('minTime')) {
-            $query->where('time', '>=', $request->minTime);
+        // Time filters - support both naming conventions
+        // Filter by min_time (or minTime)
+        if ($request->has('min_time')) {
+            $query->where('cooking_time', '>=', $request->min_time);
+        } elseif ($request->has('minTime')) {
+            $query->where('cooking_time', '>=', $request->minTime);
         }
 
-        if ($request->has('maxTime')) {
-            $query->where('time', '<=', $request->maxTime);
+        // Filter by max_time (or maxTime)
+        if ($request->has('max_time')) {
+            $query->where('cooking_time', '<=', $request->max_time);
+        } elseif ($request->has('maxTime')) {
+            $query->where('cooking_time', '<=', $request->maxTime);
         }
 
         if ($request->has('search')) {
