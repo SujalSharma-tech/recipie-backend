@@ -81,6 +81,20 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
+        'pgsql_cloud' => [
+            'driver' => 'pgsql',
+            'url' => env('DATABASE_CLOUD_URL'),
+            'host' => env('DB_CLOUD_HOST', '127.0.0.1'),
+            'port' => env('DB_CLOUD_PORT', '5432'),
+            'database' => env('DB_CLOUD_DATABASE', 'forge'),
+            'username' => env('DB_CLOUD_USERNAME', 'forge'),
+            'password' => env('DB_CLOUD_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => 'prefer',
+        ],
 
         'pgsql' => [
             'driver' => 'pgsql',
@@ -147,7 +161,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_'),
             'persistent' => env('REDIS_PERSISTENT', false),
         ],
 
